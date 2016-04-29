@@ -1,0 +1,112 @@
+/*1. Caesar Cipher
+
+Name: Akshay Brahmankar				 Date: 29-01-16
+Roll No: 12(BE-H)  Batch-H1				 Sub: Network Security(LAB)    	*/				
+#include <iostream>
+#include <ctime>
+using namespace std;
+
+string encryption(string str1,int key,int key1){
+    int i=0;
+    string temp=" ";
+        while(str1[i]!='\0') {
+            if(str1[i]>='A' && str1[i]<='Z') {
+                 temp += (char)((str1[i] + key - 'A' + 26)%26 + 'A');
+            }
+          else if(str1[i]>='a' && str1[i]<='z') {
+                temp += (char)((str1[i] + key - 'a' + 26)%26 + 'a');
+           }
+          else if(str1[i]>='0' && str1[i]<='9') {
+                temp += (char)((str1[i] + key1 - '0' + 10)%10 + '0');
+            }
+       else
+               	 cout<< "Invalid input...!!" <<endl;
+        i++;
+      }
+        cout<< "Encrypted String is: " << temp <<endl;
+        return temp;
+}
+string decryption(string str2,int key,int key1){
+    int i=0;
+    string temp=" ";
+      while(str2[i]!='\0')  {
+            if(str2[i]>='A' && str2[i]<='Z') {
+                 temp += (char)((str2[i] - key - 'A' + 26)%26 + 'A');
+            }
+            else if(str2[i]>='a' && str2[i]<='z') {
+                temp += (char)((str2[i] - key - 'a' + 26)%26 + 'a');
+            }
+            else if(str2[i]>='0' && str2[i]<='9') {
+               temp += (char)((str2[i] - key1 - '0' + 10)%10 + '0');
+            }
+             i++;
+         }
+        return temp;
+}
+int main(){
+    cout << "Enter the alphanumeric plaintext: " << endl;
+    string str1,str2;
+    cin >> str1;
+    time_t current = time(0);
+    char* dt = ctime(&current);
+    tm *tm1 = localtime(&current);
+
+    cout << "The local date and time is: " << dt << endl;
+    cout << "Seconds are: " <<tm1-> tm_sec << endl;
+
+    int seconds =  tm1->tm_sec;
+    int key = seconds % 26;
+    int key1 = key % 10 ;
+    cout << "key is: "<< key <<" key1 is: "<< key1 <<endl;
+
+    str2 = encryption(str1,key,key1);
+    key1=0;
+    for(key=0;key<26;key++,key1++){
+
+        if(key1>10){
+            key1=0;
+         }
+      string str3 = decryption(str2,key,key1);
+      cout<< "Decrypted text is: "<< str3<<endl;
+    }
+    return 0;
+}
+/*
+Output: 
+Enter the alphanumeric plaintext:
+Akshay13B
+The local date and time is: Fri Jan 29 22:28:43 2016
+Seconds are: 43
+key is: 17 key1 is: 7
+Encrypted String is:  Rbjyrp80S
+Decrypted text is:  Rbjyrp80S
+Decrypted text is:  Qaixqo79R
+Decrypted text is:  Pzhwpn68Q
+Decrypted text is:  Oygvom57P
+Decrypted text is:  Nxfunl46O
+Decrypted text is:  Mwetmk35N
+Decrypted text is:  Lvdslj24M
+Decrypted text is:  Kucrki13L
+Decrypted text is:  Jtbqjh02K
+Decrypted text is:  Isapig91J
+Decrypted text is:  Hrzohf80I
+Decrypted text is:  Gqynge80H
+Decrypted text is:  Fpxmfd79G
+Decrypted text is:  Eowlec68F
+Decrypted text is:  Dnvkdb57E
+Decrypted text is:  Cmujca46D
+Decrypted text is:  Bltibz35C
+Decrypted text is:  Akshay24B
+Decrypted text is:  Zjrgzx13A
+Decrypted text is:  Yiqfyw02Z
+Decrypted text is:  Xhpexv91Y
+Decrypted text is:  Wgodwu80X
+Decrypted text is:  Vfncvt80W
+Decrypted text is:  Uembus79V
+Decrypted text is:  Tdlatr68U
+Decrypted text is:  Sckzsq57T
+
+Process returned 0 (0x0)   execution time : 20.079 s
+Press any key to continue.
+*/
+

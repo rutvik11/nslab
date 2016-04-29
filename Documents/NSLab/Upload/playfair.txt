@@ -1,0 +1,175 @@
+/*
+ * Rashmi Chennagiri
+ * BE H 14
+ * 121141
+ * NS Lab 3 - PlayFair
+ * 
+ */
+
+import java.util.Scanner;
+
+public class Asgn3_PlayFair {
+
+	String plainText = "";
+	String keyword = "";
+
+	String matrix = "";
+	int rows = 5;
+
+
+	public void createMatrix()
+	{
+		char remaining = 'a';		
+
+		//enter keyword into matrix
+		for( int k=0 ; k < keyword.length() ; k++ )
+		{
+			char p = keyword.charAt(k);
+			
+			if( matrix.indexOf( p ) == -1 )
+				matrix = matrix + "" + p ;
+		}
+				
+			
+		if( matrix.length() > (rows*rows) )
+			System.out.println("matrix full");
+
+		//enter remaining alphabets into matrix
+		while( matrix.length() < (rows*rows) )
+		{
+			if( matrix.indexOf(remaining) == -1 )
+				matrix = matrix + "" + remaining ;						
+
+			remaining++;
+		}
+
+		System.out.println("\nMatrix: " + matrix);
+	}
+
+
+	public String playfair( String pt , String e )
+	{
+		String ciphered = "";
+		char p1, p2, c1='a', c2='a';
+		int ind_pt = 0, index1, row1, col1, index2, row2, col2;
+
+		//add an extra 'x' for odd length plain text
+		if( pt.length()%2 != 0 )
+			pt += "x";
+
+		while( ind_pt < pt.length() )
+		{
+			//divide plain text into pairs
+			p1 = pt.charAt( ind_pt );
+			ind_pt++;
+
+			p2 = pt.charAt( ind_pt );
+			ind_pt++;
+			
+			//find their positions in keyword matrix
+			index1 = matrix.indexOf(p1);			
+			row1 = index1 / rows ;
+			col1 = index1 % rows ;
+
+			index2 = matrix.indexOf(p2);
+			row2 = index2 / rows ;
+			col2 = index2 % rows ;
+
+			if(row1 == row2) //both elements in same row
+			{
+				if(e.equals("encrypt"))
+				{
+					c1 = matrix.charAt( row1*rows + ((col1+1)%rows) );
+					c2 = matrix.charAt( row2*rows + ((col2+1)%rows) );
+				}
+				else if( e.equals("decrypt"))
+				{
+					if(col1==0)
+						col1 = 4;
+					else 
+						col1--;					
+					c1 = matrix.charAt( row1*rows + col1 );
+
+					if(col2==0)
+						col2 = 4;
+					else 
+						col2--;
+					c2 = matrix.charAt( row2*rows + col2 );
+				}
+			}
+			
+			else if(col1==col2) //both elements in same column 
+			{
+				if(e.equals("encrypt"))
+				{
+					c1 = matrix.charAt( ( (row1+1)%rows )*rows + col1 );
+					c2 = matrix.charAt( ( (row2+1)%rows )*rows + col2 );
+				}
+				else if( e.equals("decrypt"))
+				{
+					if(row1==0)
+						row1 = 4;
+					else 
+						row1--;					
+					c1 = matrix.charAt( row1*rows + col1 );
+
+					if(row2==0)
+						row2 = 4;
+					else 
+						row2--;
+					c2 = matrix.charAt( row2*rows + col2 );
+					
+				}
+			}
+			
+			else //both elements in different rows and columns
+			{
+				c1 = matrix.charAt( row1*rows + col2 );
+				c2 = matrix.charAt( row2*rows + col1);
+			}
+
+			ciphered = ciphered + c1 + c2;
+		}
+
+		return ciphered;
+	}
+
+
+	public static void main(String[] args) {
+
+		Asgn3_PlayFair obj = new Asgn3_PlayFair();
+
+		@SuppressWarnings("resource")
+		Scanner scanner = new Scanner(System.in);
+
+		System.out.println("Enter plain text: ");
+		obj.plainText = scanner.next();
+
+		System.out.println("Enter keyword : ");
+		obj.keyword = scanner.next();
+
+		obj.createMatrix();
+
+		String cipheredText = obj.playfair( obj.plainText , "encrypt" );
+		System.out.println("\nPlayFair Ciphered Text = " + cipheredText);
+
+		String decrypted = obj.playfair( cipheredText , "decrypt" );
+		System.out.println("\nDecrypted Original Text = " + decrypted);
+	}
+
+}
+
+
+
+/*
+Enter plain text: 
+rashmivitpune
+Enter keyword : 
+monarchyy
+
+Matrix: monarchybdefgijklpqstuvwx
+
+PlayFair Ciphered Text = mrldaewgvkvojt
+
+Decrypted Original Text = rashmivitpunex
+*/

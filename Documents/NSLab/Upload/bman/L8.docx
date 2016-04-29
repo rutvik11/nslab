@@ -1,0 +1,95 @@
+﻿#include<iostream>
+#include<bits/stdc++.h>
+#include<cmath>
+
+using namespace std;
+
+
+int multiplicatiiveInverse(int e,int fn){
+
+	int temp;
+
+	for(int m=0; m<fn ; m++){
+		if((e*m)%fn==1){
+			temp = m;
+			break;
+		}
+	}
+	
+	return temp;
+}
+
+
+
+int main(){
+
+	int p,q,pl_txt,fn;
+	long long unsigned int res,C,e,d,D,res1,D1,D2;
+	long long unsigned int res1_new=1;
+	long long unsigned int res1_new1=1;
+	cout<<"Enter plain text(M): ";
+	cin>>pl_txt;
+
+	cout<<"Enter the values of P and Q: ";
+	cin>>p;cin>>q;
+	
+	cout<<"Enter the key(e): ";
+	cin>>e;
+																	//calculate n,phi(n)
+	long long int n; 
+	n = p*q;
+
+	fn = (p-1)*(q-1);
+																	//calculate d
+	int x;
+	x = multiplicatiiveInverse(e,fn);
+
+	d = x;
+	cout<<"multiplicatiiveInverse is(d): "<<d;
+
+																	//Encryption
+	res = pow(pl_txt,e);
+	C	= res % n;
+
+	cout<<endl<<"Cipher text is: "<<C;
+																	//Decryption
+	/*res1 = pow(C,d);
+	D	 = res1 % n;
+	*/
+
+	for(int i=1;i<=d-10;i++){
+		res1 = C % n;
+		res1_new = res1*res1_new;
+	}
+
+	//cout<<"  "<<res1_new;
+	D1 = res1_new % n;
+	for(int i=1;i<=10;i++){
+		res1 = C % n;
+		res1_new1 = res1*res1_new1;
+	}
+
+	D2 = res1_new1 % n;
+
+	D = (D1*D2)%n;
+	cout<<endl<<" Decryption text is: "<<D;
+
+	cout<<endl;
+	return 0;
+}
+
+
+
+/* 
+Output: 
+
+Enter plain text(M): 88
+Enter the values of P and Q: 11 17
+Enter the key(e): 7
+multiplicatiiveInverse is(d): 23
+Cipher text is: 11
+Decryption text is: 88
+
+
+
+*/

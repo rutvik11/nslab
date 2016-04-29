@@ -1,0 +1,140 @@
+
+public class Asgn4_HillCipher {
+
+    String alphabets = "abcdefghijklmnopqrstuvwxyz";
+    String plainText = "";
+
+    int rows;
+
+    int[] P, C;
+    int[][] K, KI;
+
+    public Asgn4_HillCipher() {
+        
+        @SuppressWarnings("resource")
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter plain text: ");
+        plainText = scanner.next();
+
+        System.out.print("Enter key matrix row size : ");
+        rows = Integer.parseInt(scanner.next());
+
+        P = new int[rows];
+        C = new int[rows];
+        K = new int[rows][rows];
+        KI = new int[rows][rows];
+
+        for (int y = 0; y < rows; y++) {
+            for (int z = 0; z < rows; z++) {
+                System.out.print("enter element at (" + y + ", " + z + "):");
+                K[y][z] = Integer.parseInt(scanner.next());
+            }
+        }
+
+    }
+
+    public void encrypt() {
+        char p;
+        int sum = 0;
+
+        //form P array to represent plain text
+        for (int x = 0; x < plainText.length(); x++) {
+            p = plainText.charAt(x);
+            P[x] = alphabets.indexOf(p);
+        }
+
+        System.out.println("\nPlain Text Matrix, P:");
+        for (int i = 0; i < rows; i++) {
+            System.out.print("  " + P[i]);
+        }
+
+        // C = PK mod26
+        for (int c = 0; c < rows; c++) //columns of K
+        {
+            for (int r = 0; r < rows; r++) //rows of K
+            {
+                sum += P[r] * K[r][c];
+            }
+
+            C[c] = sum % 26;
+            sum = 0;
+        }
+
+        System.out.println("\n\nHill Cipher Encrypted Matrix, C:");
+        for (int i = 0; i < rows; i++) {
+            System.out.print("  " + alphabets.charAt(C[i]));
+        }
+
+    }
+
+    public void decrypt() {
+        // P = C * K^(-1)
+
+        int mmi, mod, x, s = 0;
+
+        //K_inverse for 2x2 matrix
+        int denominator = K[0][0] * K[1][1] - K[0][1] * K[1][0];  //ad-bc
+
+        mod = denominator % 26;
+        mod = mod % 26;
+
+        if (mod < 0) {
+            mod += 26;
+        }
+
+        for (x = 1; x <= 26; x++) {
+            if (((mod * x) % 26) == 1) {
+                break;
+            }
+        }
+
+        System.out.println("\n\ndenominator = " + denominator);
+
+        mmi = x;
+        System.out.println("mmi = " + mmi);
+
+        KI[0][0] = (mmi * K[1][1]) % 26;
+        KI[0][1] = (mmi * (-K[0][1])) % 26;
+        KI[1][0] = (mmi * (-K[1][0])) % 26;
+        KI[1][1] = (mmi * K[0][0]) % 26;
+
+        System.out.println("\nKey Inverse Matrix, KI:");
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < rows; j++) {
+                System.out.print("  " + KI[i][j]);
+            }
+        }
+
+        // P = C*KI        
+        for (int c = 0; c < rows; c++) 
+        {
+            for (int r = 0; r < rows; r++) 
+            {
+                s += C[r] * KI[r][c];
+            }
+
+            P[c] = s % 26;
+            s = 0;
+        }
+
+        System.out.println("\n\nDecrypted Plain Text, P:");
+        for (int i = 0; i < rows; i++) {
+            if (P[i] < 0) {
+                P[i] += 26;
+            }
+            System.out.print("  " + alphabets.charAt(P[i]));
+        }
+
+        System.out.println("\n");
+
+    }
+
+    public static void main(String args[]) {
+
+        Asgn4_HillCipher obj = new Asgn4_HillCipher();
+        obj.encrypt();
+        obj.decrypt();
+    }
+}
+
