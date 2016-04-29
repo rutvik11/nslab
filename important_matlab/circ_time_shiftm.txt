@@ -1,0 +1,32 @@
+%kriti nagori
+%k-48
+
+clc;
+clear all;
+close all;
+N=8;
+x=[3 4 5 6 7 8 9 10]
+X=dft_function(x,N);
+l=2;
+for k=0:1:N-1;
+    Y(k+1)=X(k+1)*exp((-2*pi*i*k*l)/N);
+end;
+y=idft_function(Y,N)
+subplot(2,2,1);
+    stem(abs(x));
+    title('Magnitude');
+    subplot(2,2,2);
+    stem(angle(x));
+    title('angle');
+    subplot(2,2,3);
+    stem(abs(y));
+    title('Magnitude');
+    subplot(2,2,4);
+    stem(angle(y));
+    title('angle');
+%o/p:x = 3     4     5     6     7     8     9    10
+X =  52.0000  -4.0000 + 9.6569i  -4.0000 + 4.0000i  -4.0000 + 1.6569i  -4.0000 - 0.0000i  -4.0000 - 1.6569i
+ -4.0000 - 4.0000i  -4.0000 - 9.6569i
+X =9.0000 + 0.0000i  10.0000 + 0.0000i   3.0000 - 0.0000i 4.0000 + 0.0000i   5.0000 - 0.0000i   6.0000 - 0.0000i 7.0000 - 0.0000i   8.0000 - 0.0000i
+   
+    

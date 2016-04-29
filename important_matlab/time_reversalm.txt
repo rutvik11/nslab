@@ -1,0 +1,28 @@
+%kriti nagori
+%k-48
+
+%time reversal
+
+clc;
+clear all;
+close all;
+x=[1 2 3 4 5 6 7];
+y=[1 7 6 5 4 3 2];
+N=7;
+x1=dft_function(x,7)
+y1=dft_function(y,7)
+subplot(2,2,1);
+    stem(abs(x1));
+    title('Magnitude');
+    subplot(2,2,2);
+    stem(angle(x1));
+    title('angle');
+    subplot(2,2,3);
+    stem(abs(y1));
+    title('Magnitude');
+    subplot(2,2,4);
+    stem(angle(y1));
+    title('angle');
+
+%o/p:X =  28.0000   -3.5000 + 7.2678i  -3.5000 + 2.7912i  -3.5000 + 0.7989i  -3.5000 - 0.7989i  -3.5000 - 2.7912i  -3.5000 - 7.2678i
+  

@@ -1,0 +1,28 @@
+clc;
+x=[1 2 3 4 4 3 2 1];
+N=8;
+Xee(1)=x(1)+x(5);
+Xee(2)=x(1)-x(5);
+Xeo(1)=x(3)+x(7);
+Xeo(2)=x(3)-x(7);
+Xoe(1)=x(2)+x(6);
+Xoe(2)=x(2)-x(6);
+Xoo(1)=x(4)+x(8);
+Xoo(2)=x(4)-x(8);
+
+w=exp(-i*2*pi/N);
+
+for k=0:1
+Xe(k+1)=Xee(k+1)+ Xeo(k+1)*(w^(2*k));
+Xe(k+1+(N/4))=Xee(k+1)-Xeo(k+1)*(w^(2*k));
+end
+
+for k=0:1
+Xo(k+1)=Xoe(k+1)+ Xoo(k+1)*(w^(2*k));
+Xo(k+1+(N/4))=Xoe(k+1)-Xoo(k+1)*(w^(2*k));
+end
+
+for k=0:3
+X(k+1)=Xe(k+1)+Xo(k+1)*(w^k);
+X(k+1+(N/2))=Xe(k+1)-Xo(k+1)*(w^k);
+end
